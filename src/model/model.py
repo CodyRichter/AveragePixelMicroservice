@@ -1,4 +1,5 @@
 from PIL import Image
+from PIL.ImageStat import Stat
 import time
 
 
@@ -20,11 +21,14 @@ def predict(image_file):
     """
 
     image = Image.open(image_file.name, mode='r')
-
+    stat = Stat(image)
+    av_r, av_g, av_b = stat.mean  # Get average pixel
+    image.close()
     return {
-        'classes': ['isGreen', 'isRed'],  # List every class in the classifier
+        'classes': ['average_red', 'average_green', 'average_blue'],  # List every class in the classifier
         'result': {  # For results, use the class names above with the result value
-            'isGreen': 0,
-            'isRed': 1
+            'average_red': av_r,
+            'average_green': av_g,
+            'average_blue': av_b
         }
     }
