@@ -22,7 +22,9 @@ def predict(image_file):
 
     image = Image.open(image_file.name, mode='r')
     stat = Stat(image)
-    av_r, av_g, av_b = stat.mean  # Get average pixel
+    av_r = stat.mean[0]
+    av_g = stat.mean[1]
+    av_b = stat.mean[2]
 
     image.convert('L')  # Convert to grayscale
     stat = Stat(image)
