@@ -23,12 +23,18 @@ def predict(image_file):
     image = Image.open(image_file.name, mode='r')
     stat = Stat(image)
     av_r, av_g, av_b = stat.mean  # Get average pixel
+
+    image.convert('L')  # Convert to grayscale
+    stat = Stat(image)
+    brightness = stat.mean[0]  # Between 0 -> 255. 0 is DARK and 255 is LIGHT
+
     image.close()
     return {
-        'classes': ['average_red', 'average_green', 'average_blue'],  # List every class in the classifier
+        'classes': ['average_red', 'average_green', 'average_blue', 'brightness'],  # List every class in the classifier
         'result': {  # For results, use the class names above with the result value
             'average_red': av_r,
             'average_green': av_g,
-            'average_blue': av_b
+            'average_blue': av_b,
+            'brightness': stat.mean[0]
         }
     }
